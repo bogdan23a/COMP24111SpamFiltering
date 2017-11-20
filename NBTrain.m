@@ -17,21 +17,25 @@ NoProbability = No / 2300;
 %
 
 %numOfClasses = 2;
-Parameters = zeros(57,4);
+Parameters = zeros(57,6);
 for i = 1:57
   s = 0;
   for j = 1:2300
   	if LabelSet(j) == 1
-  	  if AttributeSet(j, i) == 1
+  	  if AttributeSet(j, i) == 2
    	    Parameters(i,1) = Parameters(i,1) + 1;
-   	  else
+   	  elseif AttributeSet(j,i) == 1
    	  	Parameters(i,2) = Parameters(i,2) + 1;
+   	  else
+   	  	Parameters(i,3) = Parameters(i,3) + 1;
    	  end
    	else
-   	  if AttributeSet(j, i) == 1
-	   	Parameters(i,3) = Parameters(i,3) + 1;
-	   else 
+   	  if AttributeSet(j, i) == 2
 	   	Parameters(i,4) = Parameters(i,4) + 1;
+	   elseif AttributeSet(j, i) == 1
+	   	Parameters(i,5) = Parameters(i,5) + 1;
+	   else
+	   	Parameters(i,6) = Parameters(i,6) + 1;
 	  end
 	end
   end
@@ -43,8 +47,10 @@ end
 for i=1:57
 	LookUpTable(i, 1) = Parameters(i, 1) / Yes;
 	LookUpTable(i, 2) = Parameters(i, 2) / Yes;
-	LookUpTable(i, 3) = Parameters(i, 3) / No;
+	LookUpTable(i, 3) = Parameters(i, 3) / Yes;
 	LookUpTable(i, 4) = Parameters(i, 4) / No;
+	LookUpTable(i, 5) = Parameters(i, 5) / No;
+	LookUpTable(i, 6) = Parameters(i, 6) / No;
 
 end
 
