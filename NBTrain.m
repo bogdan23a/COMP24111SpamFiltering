@@ -1,3 +1,11 @@
+%
+%Setup variables
+%
+maxAttributeNumber = 2;
+
+
+
+
 Yes=0;
 for i = 1:2300
 	Yes = Yes + LabelSet(i);
@@ -17,43 +25,45 @@ NoProbability = No / 2300;
 %
 
 %numOfClasses = 2;
-Parameters = zeros(57,6);
+
+Parameters = zeros(57,(maxAttributeNumber + 1)*2);
+
 for i = 1:57
-  s = 0;
-  for j = 1:2300
-  	if LabelSet(j) == 1
-  	  if AttributeSet(j, i) == 2
-   	    Parameters(i,1) = Parameters(i,1) + 1;
-   	  elseif AttributeSet(j,i) == 1
-   	  	Parameters(i,2) = Parameters(i,2) + 1;
-   	  else
-   	  	Parameters(i,3) = Parameters(i,3) + 1;
-   	  end
-   	else
-   	  if AttributeSet(j, i) == 2
-	   	Parameters(i,4) = Parameters(i,4) + 1;
-	   elseif AttributeSet(j, i) == 1
-	   	Parameters(i,5) = Parameters(i,5) + 1;
-	   else
-	   	Parameters(i,6) = Parameters(i,6) + 1;
+  currentAttributeNumber = maxAttributeNumber;
+  while currentAttributeNumber >= 0
+	  for j = 1:2300
+	  	if LabelSet(j) == 1
+	  	  
+	  	  if(AttributeSet(j,i) == currentAttributeNumber)
+	  	  	Parameters(i, maxAttributeNumber - currentAttributeNumber + 1) = Parameters(i, maxAttributeNumber - currentAttributeNumber + 1) + 1;
+	  	  end
+	   	else
+	   	  if(AttributeSet(j,i) == currentAttributeNumber)
+	  	  	Parameters(i, 2 * maxAttributeNumber - currentAttributeNumber + 2) = Parameters(i, 2 * maxAttributeNumber - currentAttributeNumber + 2) + 1;
+	  	  end
+		end
 	  end
-	end
+	  currentAttributeNumber = currentAttributeNumber - 1;
   end
 
 end
 
 
-
+LookUpTable = zeros(57,(maxAttributeNumber + 1)*2);
 for i=1:57
-	LookUpTable(i, 1) = Parameters(i, 1) / Yes;
-	LookUpTable(i, 2) = Parameters(i, 2) / Yes;
-	LookUpTable(i, 3) = Parameters(i, 3) / Yes;
-	LookUpTable(i, 4) = Parameters(i, 4) / No;
-	LookUpTable(i, 5) = Parameters(i, 5) / No;
-	LookUpTable(i, 6) = Parameters(i, 6) / No;
-
+	%for j=1:maxAttributeNumber+1
+	%	LookUpTable(i,j) = Parameters(i,j)/Yes;
+	%end
+	%for j=maxAttributeNumber+2,(maxAttributeNumber + 1)*2
+		%LookUpTable(i,j) = Parameters(i,j)/No;
+	%	LookUpTable(i,j) = 123;
+	%end
+	for j=1:(maxAttributeNumber + 1)*2
+		if j<maxAttributeNumber + 2 
+			LookUpTable(i,j) = Parameters(i,j)/Yes;
+		else
+			LookUpTable(i,j) = Parameters(i,j)/No;
+		end
+	end
 end
 
-
-
-sum(LookUpTable(i,1))
