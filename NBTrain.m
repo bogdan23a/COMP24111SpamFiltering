@@ -1,8 +1,8 @@
 %
 %Setup variables
 %
-maxAttributeNumber = 1;
-classNumber = 2;
+maxAttributeNumber = 6;
+classNumber = 3;
 
 
 
