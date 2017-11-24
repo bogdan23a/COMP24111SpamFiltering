@@ -1,15 +1,35 @@
+function [Parameters, maxAttributeNumber, LookUpTable, YesProbability, NoProbability, MaybeProbability, Yes, No] = NBTrain(AttributeSet, LabelSet)
+
 %
 %Setup variables
 %
-maxAttributeNumber = 6;
-classNumber = 3;
+x=0;
+for i=1:size(LabelSet,1)
+	if x < LabelSet(i)
+		classNumber = LabelSet(i);
+		x = LabelSet(i);
+	end
+end
+
+
+x=0;
+for i=1:size(AttributeSet,1)
+	for j=1:size(AttributeSet,2)
+		if x < AttributeSet(i,j)
+			maxAttributeNumber = AttributeSet(i,j);
+			x = AttributeSet(i,j);
+		end
+	end
+end
+
+classNumber = classNumber + 1;
 
 
 
 Yes=0;
 No=0;
 Maybe=0;
-for i = 1:2300
+for i = 1:size(LabelSet,1)
 	if LabelSet(i) == 2
 		Maybe = Maybe + 1;
 	elseif LabelSet(i) == 1
@@ -22,9 +42,9 @@ end
 %
 %P(Yes),P(No)
 %
-YesProbability = Yes / 2300;
-MaybeProbability = Maybe / 2300;
-NoProbability = No / 2300;
+YesProbability = Yes / size(AttributeSet,1);
+MaybeProbability = Maybe / size(AttributeSet,1);
+NoProbability = No / size(AttributeSet,1);
 
 %
 %Count each feature in each classification
@@ -36,10 +56,10 @@ NoProbability = No / 2300;
 
 Parameters = zeros(57,(maxAttributeNumber + 1)*classNumber);
 
-for i = 1:57
+for i = 1:size(AttributeSet,2)
   currentAttributeNumber = maxAttributeNumber;
   while currentAttributeNumber >= 0
-	  for j = 1:2300
+	  for j = 1:size(AttributeSet,1)
 	  	%
 	  	%if three classes classes
 	  	%
@@ -81,16 +101,16 @@ end
 
 
 LookUpTable = zeros(57,(maxAttributeNumber + 1)*classNumber);
-for i=1:57
+for i=1:size(AttributeSet,2)
 	%
 	%if three classes
 	%
 	if Maybe ~= 0
 		for j=1:(maxAttributeNumber + 1)*classNumber
 			if j<maxAttributeNumber + 2 
-				LookUpTable(i,j) = Parameters(i,j)/Yes;
-			elseif j>=maxAttributeNumber+1 & j<=(maxAttributeNumber+1)*2 
 				LookUpTable(i,j) = Parameters(i,j)/Maybe;
+			elseif j>=maxAttributeNumber+1 & j<=(maxAttributeNumber+1)*2 
+				LookUpTable(i,j) = Parameters(i,j)/Yes;
 			else
 				LookUpTable(i,j) = Parameters(i,j)/No;
 			end

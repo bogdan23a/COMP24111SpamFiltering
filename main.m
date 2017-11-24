@@ -2,17 +2,15 @@ close all;
 clear all;
 fname = input('Enter a filename to load data for training/testing: ','s');
 load(fname);
+if(fname == 'avc_c2' )
+	[MeanYes, MeanNo, StdYes, StdNo] = new(AttributeSet, LabelSet);
+	[predictLabel, expected, accuracy] = newTest(testAttributeSet, validLabel, StdYes, StdNo, MeanYes, MeanNo);
+else
+	[Parameters, maxAttributeNumber, LookUpTable, YesProbability, NoProbability, MaybeProbability, Yes, No ] = NBTrain(AttributeSet, LabelSet); % NB training
+	[predictLabel, accuracy, expected]=NBTest(Parameters, testAttributeSet, validLabel, LookUpTable, YesProbability, NoProbability, MaybeProbability, maxAttributeNumber, Yes, No);
 
-% Put your NB training function below
-%[Parameters] = NBTrain(AttributeSet, LabelSet);
-
-%[ "Parameter List" ] = NBTrain(AttributeSet, LabelSet); % NB training
-% Put your NB test function below
-%% functionname: function description
-%[predictLabel, accuracy] = NBTest(Parameters, testAttributeSet, validLabel);
-
-%[predictLabel, accuracy] = NBTest( "Parameter List" , testAttributeSet, validLabel); % NB test
-
-%fprintf('********************************************** \n');
-%fprintf('Overall Accuracy on Dataset %s: %f \n', fname, accuracy);
-%fprintf('********************************************** \n');
+end
+%
+fprintf('********************************************** \n');
+fprintf('Overall Accuracy on Dataset %s: %f \n', fname, accuracy);
+fprintf('********************************************** \n');

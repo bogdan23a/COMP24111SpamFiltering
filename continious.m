@@ -1,3 +1,4 @@
+// function [StdYes, StdNo]
 YesVector=  zeros(2400, 1);
 NoVector = zeros(2400, 1);
 for i=1:57
