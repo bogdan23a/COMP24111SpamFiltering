@@ -1,9 +1,10 @@
 function [MeanYes, MeanNo, StdYes, StdNo] = new(AttributeSet, LabelSet)
+  %{
 for i=1:size(AttributeSet,2)
   indexYes = 1;
   indexNo = 1;
   for j=1:size(AttributeSet,1)
-    if(LabelSet(j) == 1)
+    if(abs(LabelSet(j) - 1) < 0.5)
       Yes(indexYes, i) = AttributeSet(j,i);
       indexYes = indexYes + 1;
     else
@@ -13,22 +14,48 @@ for i=1:size(AttributeSet,2)
   end
 end
 
+size(Yes)
+size(No)
+
 MeanYes = mean(Yes);
 MeanNo = mean(No);
 
 StdYes = std(Yes);
 StdNo = std(No);
 
-for i=1:size(StdYes)
-  if StdYes(i) == 0 
-    StdYes(i) = 0.0001;
+size(StdYes)
+
+for i=1:size(StdYes,2)
+  if StdYes(1, i) == 0 
+    StdYes(1, i) = 0.0001;
   end
 end
-for i=1:size(StdNo)
-  if StdNo(i) == 0
-    StdNo(i) = 0.0001;
+for i=1:size(StdNo,2)
+  if StdNo(1, i) == 0
+    StdNo(1, i) = 0.0001;
   end
 end
+%}
+yes = [];
+no = [];
+
+for i = 1:size(AttributeSet,1)
+  %for j = 1:size(AttributeSet, 2)
+    if abs(LabelSet(i) - 1) < 0.5
+      yes = [yes; AttributeSet(i, :)];
+    else
+      no = [no; AttributeSet(i, :)];
+    end;
+  %end;
+end;
+
+size(yes)
+size(no)
+
+MeanYes = mean(yes);
+MeanNo = mean(no);
+StdYes = std(yes);
+StdNo = std(no);
 
 % for i=1:size(transpose(Yes))
 %   for j=1:size(Yes)
