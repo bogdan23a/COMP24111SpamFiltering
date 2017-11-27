@@ -129,3 +129,11 @@ for i=1:size(AttributeSet,2)
 	end
 
 end
+
+for i=1:size(LookUpTable,1)
+	for j=1:size(LookUpTable,2)
+		if LookUpTable(i,j) == 0
+			LookUpTable(i,j) = 0.00001;
+		end
+	end
+end
